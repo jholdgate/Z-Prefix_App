@@ -41,6 +41,17 @@ app.get('/users', (req,res) => {
   });
 });
 
+app.get('/items', (req,res) => {
+  knex('items')
+    .then((data) => {
+      res.status(200).send(data);
+    })
+  .catch((err) => {
+    console.log(err);
+    res.status(301).send('Error retrieving items')
+  });
+});
+
 // LISTEN
 app.listen(port, ()=>{
   console.log(`App is listening on port ${port}`)

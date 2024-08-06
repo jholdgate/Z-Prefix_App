@@ -1,10 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 const knex = require("knex")(
-  require("./knexfile.js")[process.env.NODE_ENV || "development"]
+  require("../knexfile.js")[process.env.NODE_ENV || "development"]
 );
 
 
@@ -14,7 +14,13 @@ const app = express();
 
 //MIDDLEWARE
   app.use(express.json())//JSON
-  app.use(cors())//CORS
+
+  //cors
+  app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+  }));
+
   app.use(morgan('tiny'))//MORGAN
 
 

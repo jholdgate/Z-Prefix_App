@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from 'react-router-dom';
 import { AutoComplete } from "primereact/autocomplete";
 import { InputNumber } from 'primereact/inputnumber';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -7,12 +8,13 @@ import { AuthContext } from '../App';
 
 
 
-const AddInventory = () => {
+const AddInventory = ({ onItemAdded }) => {
   const [value, setValue] = useState('');
   const [items, setItems] = useState([]);
   const [quantity, setQuantity] = useState();
   const [description, setDescription] = useState();
   const { userId } = useContext(AuthContext);
+  const navigate = useNavigate();
 
 
   const search = (e) => {
@@ -40,10 +42,14 @@ const AddInventory = () => {
         const addedItem = await res.json();
         console.log('Added item:', addedItem);
 
+        onItemAdded(addedItem); //notify parent component
+
         setValue('');
         setQuantity(null);
         setDescription('');
         alert('Item added successfully!');
+
+        navigate('/inventory'); // refreshes page
       }
     } catch(err) {
       console.error(err.message);

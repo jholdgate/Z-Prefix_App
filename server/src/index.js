@@ -213,7 +213,7 @@ app.delete("/items/:id", (req, res) => {
     .del()
     .then((count) => {
       if (count) {
-        res.status(200).send;
+        res.status(200).send({ message: "Item deleted successfully" });
       } else {
         res.status(404).json({ error: "Item not found" });
       }

@@ -2,18 +2,24 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const port = process.env.PORT || 8080;
-
+const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 const knex = require("knex")(
   require("../knexfile.js")[process.env.NODE_ENV || "development"]
 );
+
+const SECRET_KEY = "my_secret_key";
 
 // Create App
 const app = express();
 
 // MIDDLEWARE
-app.use(express.json()); //JSON
-
-// Cors
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(morgan("tiny"));
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -21,9 +27,46 @@ app.use(
   })
 );
 
-app.use(morgan("tiny")); //MORGAN
-
 // ROUTES
+
+app.post("/verify", async (req, res) => {
+  const { user, pass, type } = req.body;
+  let query = await knex('users').select('*').where("username", user); // double check this user
+
+  if (type === "login") {
+    if (query.length === 1 && await bcrypt.compare(pass, query[0].password)) {
+      const token = jwt.sign({ username: user }, SECRET_KEY, { expiresIn: '1d' });
+      await knex('users').update({auth_token: token}).where("username", user);
+      res.cookie('auth_token', token, { httpOnly: true, secure: false });
+      res.status(200).json({ message: "Logging you in", token });
+    } else {
+      res.status(404).json({ message: "Incorrect username or password"});
+    }
+  } else if (type === "create") {
+    if (query.length === 0) {
+      const hashedPassword = await bcrypt.hash(pass, 10);
+      await knex('users').insert({ username: user, password: hashedPassword, auth_token: ''});
+      res.status(200).json({ message: "User Created"});
+    } else {
+      res.status(401).json({ message: "Username already exists"});
+    }
+  } else {
+    res.status(404).json({ message: "Invalid operation"})
+  }
+})
+
+app.get('/protected-route', (req, res) => {
+  const token = req.cookies.auth_token;
+  console.log(token)
+  if (!token) return res.status(401).json("Access denied");
+
+  try {
+      const verified = jwt.verify(token, SECRET_KEY);
+      res.status(200).json("Access granted");
+  } catch (err) {
+      res.status(400).json("Invalid token");
+  }
+});
 
 app.get("/", (req, res) => {
   res.status(200).send("WORKING!");
@@ -33,6 +76,7 @@ app.get("/", (req, res) => {
 
 app.get("/users", (req, res) => {
   knex("users")
+    .select('*')
     .then((data) => {
       res.status(200).send(data);
     })

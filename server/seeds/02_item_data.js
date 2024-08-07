@@ -10,13 +10,13 @@ exports.seed = async function (knex) {
       item_name: "shoes",
       description: "little bit of tis and that...",
       quantity: 8,
-      users_id: 3,
+      users_id: 1,
     },
     {
       item_name: "shirts",
       description: "little bit of that and this...",
       quantity: 20,
-      users_id: 2,
+      users_id: 1,
     },
     {
       item_name: "pants",

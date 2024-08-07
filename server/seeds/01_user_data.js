@@ -9,38 +9,10 @@ exports.seed = async function (knex) {
   await knex("users").insert([
     {
       username: "e",
-      firstName: "Jacob",
-      lastName: "A",
+      // firstName: "Jacob",
+      // lastName: "A",
       password: "1234",
       auth_token: "",
-    },
-    {
-      username: "d",
-      firstName: "Jon",
-      lastName: "S",
-      password: "1245",
-      auth_token: "",
-    },
-    {
-      username: "s",
-      firstName: "Kyle",
-      lastName: "F",
-      password: "1474",
-      auth_token: "",
-    },
-    {
-      username: "g",
-      firstName: "Tiffany",
-      lastName: "W",
-      password: "9586",
-      auth_token: "",
-    },
-    {
-      username: "w",
-      firstName: "Steph",
-      lastName: "Q",
-      password: "4487",
-      auth_token: "",
-    },
+    }
   ]);
 };

@@ -1,36 +1,45 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
-const userUrl= `http://localhost:8080/users/`
-const itemUrl= `http://localhost:8080/items/`
+// PrimeReact CSS
+import "primeflex/primeflex.css";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+
+// Auth
+import Cookies from 'js-cookie';
+
+// ROUTES
+import LoginPage from './pages/LoginPage.js';
+import ManagerInventoryPage from './pages/ManagerInventoryPage.js';
+import VisitorInventoryPage from './pages/VisitorInventoryPage.js';
+
+export const AuthContext = React.createContext();
 
 function App() {
-  let [users, setUsers] = useState([]);
-  let [items, setItems] = useState([]);
+  const [auth, setAuth] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(userUrl)
-      .then(res => res.json())
-      .then(data => {
-        setUsers(data);
-      })
-  }, [])
+    const token = Cookies.get('auth_token');
+    if (token) {
+      setAuth(true);
+    }
+    setLoading(false);
+  }, []);
 
-  useEffect(() => {
-    fetch(itemUrl)
-      .then(res => res.json())
-      .then(data => {
-        setItems(data);
-      })
-  }, [])
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="App">
-      {JSON.stringify(users)}
-      <div>
-        {JSON.stringify(items)}
-      </div>
-    </div>
+    <AuthContext.Provider value={{ auth, setAuth }}>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/inventory" element={auth ? <ManagerInventoryPage /> : <Navigate to="/" />} />
+        <Route path="/visitor" element={<VisitorInventoryPage />} />
+      </Routes>
+    </AuthContext.Provider>
   );
 }
 

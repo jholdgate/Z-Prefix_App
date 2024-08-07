@@ -19,6 +19,7 @@ export const AuthContext = React.createContext();
 function App() {
   const [auth, setAuth] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const token = Cookies.get('auth_token');
@@ -33,7 +34,7 @@ function App() {
   }
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, userId, setUserId }}>
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/inventory" element={auth ? <ManagerInventoryPage /> : <Navigate to="/" />} />

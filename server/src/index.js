@@ -31,22 +31,26 @@ app.use(
 
 app.post("/verify", async (req, res) => {
   const { user, pass, type } = req.body;
-  let query = await knex('users').select('*').where("username", user); // double check this user
+  let query = await knex('users').select('*').where("username", user);
 
   if (type === "login") {
     if (query.length === 1 && await bcrypt.compare(pass, query[0].password)) {
-      const token = jwt.sign({ username: user }, SECRET_KEY, { expiresIn: '1d' });
+      const token = jwt.sign({ username: user, userId: query[0].id }, SECRET_KEY, { expiresIn: '1d' });
       await knex('users').update({auth_token: token}).where("username", user);
       res.cookie('auth_token', token, { httpOnly: true, secure: false });
-      res.status(200).json({ message: "Logging you in", token });
+      res.status(200).json({
+        message: "Logging you in",
+        token,
+        userId: query[0].id
+       });
     } else {
       res.status(404).json({ message: "Incorrect username or password"});
     }
   } else if (type === "create") {
     if (query.length === 0) {
       const hashedPassword = await bcrypt.hash(pass, 10);
-      await knex('users').insert({ username: user, password: hashedPassword, auth_token: ''});
-      res.status(200).json({ message: "User Created"});
+      const [newUserId] = await knex('users').insert({ username: user, password: hashedPassword, auth_token: ''}).returning('id');
+      res.status(200).json({ message: "User Created", userId: newUserId});
     } else {
       res.status(401).json({ message: "Username already exists"});
     }
@@ -109,7 +113,7 @@ app.get("/items/users/:usersId", (req, res) => {
   knex("items")
     .join("users", "items.users_id", "=", "users.id")
     .where("users.id", usersId)
-    .select("items.*", "users.username as user_name") //changed users.name to users.username
+    .select("items.*", "users.username as user_name")
     .then((items) => {
       if (items.length) {
         res.status(200).json(items);
@@ -158,15 +162,26 @@ app.get("/items/:id", (req, res) => {
 // Create an item
 
 app.post("/items", (req, res) => {
+  const { item_name, quantity, description, users_id } = req.body;
+
+  // Validate input
+  if (!item_name || !quantity || !description || !users_id) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+
   knex("items")
-    .insert(req.body)
+    .insert({ item_name, quantity, description, users_id })
     .returning("*")
     .then((data) => {
-      res.json(data[0]);
+      res.status(201).json(data[0]);
     })
     .catch((err) => {
-      console.log(err);
-      res.status(500).send("Error creating item");
+      console.error("Error creating item:", err);
+      res.status(500).send({
+        error: "Error creating item",
+        details: err.message
+      });
     });
 });
 

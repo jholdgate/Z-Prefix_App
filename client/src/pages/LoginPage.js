@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Auth
-import authenticate from '../components/Auth.js'; // verify correct paths
+import authenticate from '../components/Auth.js';
 import Cookies from 'js-cookie';
 import { AuthContext } from '../App';
 
@@ -21,6 +21,7 @@ const LoginPage = () => {
   const [visible, setVisible] = useState(false);
   const [checked, setChecked] = useState(false);
   const { setAuth } = useContext(AuthContext);
+  const { setUserId } = useContext(AuthContext);
   const navigate = useNavigate();
 
 
@@ -77,7 +78,9 @@ const LoginPage = () => {
   const handleResponse = (res) => {
     if (res.token) {
       Cookies.set('auth_token', res.token);
+      Cookies.set('user_id', res.userId)
       setAuth(true);
+      setUserId(res.userId);
       navigate('/inventory')
     } else {
       alert(res.message)

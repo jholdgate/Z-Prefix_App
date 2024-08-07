@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 // Auth
 import Cookies from 'js-cookie';
 
+// components
+import AddInventory from '../components/AddInventory';
+
 
 const ManagerInventoryPage = () => {
   const navigate = useNavigate();
@@ -19,7 +22,10 @@ const ManagerInventoryPage = () => {
   }, [navigate]);
 
   return (
-    <div>ManagerInventoryPage</div>
+    <div>
+      <h1>ManagerInventoryPage(Welcome, User...)</h1>
+      <AddInventory />
+    </div>
   )
 }
 

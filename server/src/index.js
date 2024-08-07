@@ -65,7 +65,7 @@ app.get("/items/users/:usersId", (req, res) => {
   knex("items")
     .join("users", "items.users_id", "=", "users.id")
     .where("users.id", usersId)
-    .select("items.*", "users.name as user_name")
+    .select("items.*", "users.username as user_name") //changed users.name to users.username
     .then((items) => {
       if (items.length) {
         res.status(200).json(items);

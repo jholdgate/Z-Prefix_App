@@ -1,10 +1,11 @@
-version: '3'
+version: "3"
 services:
   db:
     container_name: db
     image: postgres
     restart: always
     environment:
+      - IS_DOCKER=true
       - POSTGRES_HOST=127.0.0.1
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=docker
@@ -12,10 +13,10 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-        test: ["CMD-SHELL", "pg_isready -U postgres"]
-        interval: 5s
-        timeout: 5s
-        retries: 5
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - user-data:/var/lib/postgresql/data/
     networks:

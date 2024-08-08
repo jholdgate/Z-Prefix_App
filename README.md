@@ -4,34 +4,36 @@ Simple overview of use/purpose.
 
 ## Description
 
-- This project is an item inventory management system.
+### This project is an item inventory management system.
 
-  - Managers can register/login.
+### Register/login.
 
     - Upon logging in, the user will be brought to an empty table where they can then input an item name, quantity and description.
 
-  - Add Item:
+### Add Item:
 
     - When user clicks submit, that data will show in the table below.
 
-  - Edit Item:
+### Edit Item:
 
     - User can then edit that data by clicking the edit pencil.
     - Once the pencil is clicked it will open the fields for that row to be edited.
     - User can then either accept those changes or discard them.
 
-  - Delete Item:
+### Delete Item:
 
     - By clicking the delet button on the right, users can delete the current row.
 
-  - View Item:
-  - Users can click the view button to see more info about that item.
-  - Users can also view all items by different owners by clicking the view all button on the bottom left.
-    **When the user goes back after viewing all item history, their table will be empty. However they can still review their items by searching for their Last Name in the all Items table.**
+### View Item:
 
-  - Visitors:
-  - Have access to view a table of all items as well as select individual ones.
-  - Also have the ability to search through items.
+- Users can click the view button to see more info about that item.
+- Users can also view all items by different owners by clicking the view all button on the bottom left.
+- ** When the user goes back after viewing all item history, their table will be empty. However they can still review their items by searching for their Last Name in the all Items table. **
+
+### Visitors:
+
+- Have access to view a table of all items as well as select individual ones.
+- Also have the ability to search through items.
 
 ## Planning
 

@@ -222,19 +222,6 @@ app.use(
       }
     })
 
-    // app.get('/protected-route', (req, res) => {
-    //   const token = req.cookies.auth_token;
-    //   console.log(token)
-    //   if (!token) return res.status(401).json("Access denied");
-
-    //   try {
-    //       const verified = jwt.verify(token, SECRET_KEY);
-    //       res.status(200).json("Access granted");
-    //   } catch (err) {
-    //       res.status(400).json("Invalid token");
-    //   }
-    // });
-
 // LISTEN
 
 app.listen(port, () => {

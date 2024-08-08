@@ -49,9 +49,8 @@ const AddInventory = ({ onItemAdded }) => {
 
   return (
     <>
-      <div>AddInventory</div>
       <form onSubmit={handleSubmit}>
-        <div className="card flex justify-content-center">
+        <div className="card flex flex-wrap gap-3 p-fluid">
           <label className="font-bold block mb-2">Item Name:</label>
           <AutoComplete value={value} onChange={(e) => setValue(e.value)} />
         </div>

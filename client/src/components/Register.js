@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import { FloatLabel } from "primereact/floatlabel";
 import authenticate from '../components/Auth.js';
 
 const Register = ({ onShowLogin, alert }) => {
@@ -62,27 +61,27 @@ const Register = ({ onShowLogin, alert }) => {
   }
 
   return (
-    <form className="flex-container flex-column align-items-center justify-content-center gap-3 py-5">
-      <h2>Register</h2>
-      <FloatLabel>
-        <InputText id="firstName" type="text" className="w-12rem" minLength="2" maxLength="30" value={firstName} onChange={(e) => setFirstName(e.target.value)} required/>
-        <label>First Name</label>
-      </FloatLabel>
-      <FloatLabel>
-        <InputText id="lastName" type="text" className="w-12rem" minLength="2" maxLength="30" value={lastName} onChange={(e) => setLastName(e.target.value)} required/>
-        <label>Last Name</label>
-      </FloatLabel>
-      <FloatLabel>
-        <InputText id="username" type="text" className="w-12rem" minLength="5" maxLength="30" value={username} onChange={(e) => setUsername(e.target.value)} required/>
-        <label>Username</label>
-      </FloatLabel>
-      <FloatLabel>
-        <InputText id="password" type="password" className="w-12rem" minLength="5" maxLength="30" value={password} onChange={(e) => setPassword(e.target.value)} required/>
-        <label>Password</label>
-      </FloatLabel>
-      <Button label="Register" type="submit" icon="pi pi-user-plus" className="w-10rem mx-auto" onClick={handleRegister}></Button>
-      <Button label="Back to Login" type="button" icon="pi pi-arrow-left" className="w-10rem mx-auto p-button-secondary" onClick={onShowLogin}></Button>
-    </form>
+    <div className="flex align-items-center justify-content-center">
+      <div className="surface-card p-4 shadow-2 border-round w-full lg:w-6">
+        <h2 className="text-center mb-4">Register</h2>
+        <div className="flex flex-column gap-2">
+          <label htmlFor="firstName" className="block text-900 font-medium mb-2">First Name</label>
+          <InputText id="firstName" type="text" className="w-full" value={firstName} onChange={(e) => setFirstName(e.target.value)} required minLength={2} maxLength={30} />
+
+          <label htmlFor="lastName" className="block text-900 font-medium mb-2">Last Name</label>
+          <InputText id="lastName" type="text" className="w-full" value={lastName} onChange={(e) => setLastName(e.target.value)} required minLength={2} maxLength={30} />
+
+          <label htmlFor="username" className="block text-900 font-medium mb-2">Username</label>
+          <InputText id="username" type="text" className="w-full" value={username} onChange={(e) => setUsername(e.target.value)} required minLength={5} maxLength={30} />
+
+          <label htmlFor="password" className="block text-900 font-medium mb-2">Password</label>
+          <InputText id="password" type="password" className="w-full" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={5} maxLength={30} />
+
+          <Button label="Register" icon="pi pi-user-plus" className="w-full mt-2" onClick={handleRegister} />
+          <Button label="Back to Login" icon="pi pi-arrow-left" className="w-full p-button-secondary mt-2" onClick={onShowLogin} />
+        </div>
+      </div>
+    </div>
   );
 };
 

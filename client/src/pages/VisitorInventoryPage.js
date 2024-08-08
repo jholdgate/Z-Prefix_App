@@ -4,7 +4,6 @@ import VisitorInventoryTable from '../components/VisitorInventoryTable';
 const VisitorInventoryPage = () => {
   return (
     <>
-        <div>VisitorInventoryPage</div>
         <VisitorInventoryTable />
     </>
   )

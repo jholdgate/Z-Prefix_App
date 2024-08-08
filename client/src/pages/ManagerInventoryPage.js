@@ -1,5 +1,6 @@
 import React, { useState, useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from 'primereact/button';
 
 // Auth
 import Cookies from 'js-cookie';
@@ -28,11 +29,16 @@ const ManagerInventoryPage = () => {
     setItems(prevItems => [...prevItems, item]);
   };
 
+  const navigateToVisitors = () => {
+    navigate('/visitor'); // Navigate to the /visitors route
+  }
+
   return (
     <div>
-      <h1>ManagerInventoryPage(Welcome, User...)</h1>
+      <h1>Manager Inventory</h1>
       <AddInventory onItemAdded={handleItemAdded} />
       <InventoryTable items={items} setItems={setItems}/>
+      <Button label="View All Inventory" onClick={navigateToVisitors} className="p-button-secondary mt-3" />
     </div>
   )
 }

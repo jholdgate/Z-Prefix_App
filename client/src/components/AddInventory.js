@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from 'react-router-dom';
 import { AutoComplete } from "primereact/autocomplete";
 import { InputNumber } from 'primereact/inputnumber';
 import { InputTextarea } from 'primereact/inputtextarea';
@@ -10,16 +9,9 @@ import { AuthContext } from '../App';
 
 const AddInventory = ({ onItemAdded }) => {
   const [value, setValue] = useState('');
-  const [items, setItems] = useState([]);
   const [quantity, setQuantity] = useState();
   const [description, setDescription] = useState();
   const { userId } = useContext(AuthContext);
-  const navigate = useNavigate();
-
-
-  const search = (e) => {
-    setItems([...Array(10).keys()].map(item => e.query + '-' + item));
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,14 +34,12 @@ const AddInventory = ({ onItemAdded }) => {
         const addedItem = await res.json();
         console.log('Added item:', addedItem);
 
-        onItemAdded(addedItem); //notify parent component
+        onItemAdded(addedItem);
 
         setValue('');
         setQuantity(null);
         setDescription('');
         alert('Item added successfully!');
-
-        navigate('/inventory'); // refreshes page
       }
     } catch(err) {
       console.error(err.message);
@@ -63,7 +53,7 @@ const AddInventory = ({ onItemAdded }) => {
       <form onSubmit={handleSubmit}>
         <div className="card flex justify-content-center">
           <label className="font-bold block mb-2">Item Name:</label>
-          <AutoComplete value={value} suggestions={items} completeMethod={search} onChange={(e) => setValue(e.value)} />
+          <AutoComplete value={value} onChange={(e) => setValue(e.value)} />
         </div>
         <div className="card flex flex-wrap gap-3 p-fluid">
           <div className="flex-auto">

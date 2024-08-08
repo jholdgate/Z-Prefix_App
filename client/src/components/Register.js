@@ -4,7 +4,7 @@ import { InputText } from 'primereact/inputtext';
 import { FloatLabel } from "primereact/floatlabel";
 import authenticate from '../components/Auth.js';
 
-const RegisterComponent = ({ onShowLogin, alert }) => {
+const Register = ({ onShowLogin, alert }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -86,4 +86,4 @@ const RegisterComponent = ({ onShowLogin, alert }) => {
   );
 };
 
-export default RegisterComponent;
+export default Register;

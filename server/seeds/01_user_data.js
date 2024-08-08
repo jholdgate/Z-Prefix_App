@@ -8,11 +8,39 @@ exports.seed = async function (knex) {
   await knex("users").del();
   await knex("users").insert([
     {
-      username: "e",
-      firstName: "Jacob",
-      lastName: "A",
-      password: "1234",
-      auth_token: "",
+      username: "anna.smith",
+      firstName: "Anna",
+      lastName: "Smith",
+      password: "abcd",
+      auth_token: ""
+    },
+    {
+      username: "brian.johnson",
+      firstName: "Brian",
+      lastName: "Johnson",
+      password: "efgh",
+      auth_token: ""
+    },
+    {
+      username: "catherine.williams",
+      firstName: "Catherine",
+      lastName: "Williams",
+      password: "ijkl",
+      auth_token: ""
+    },
+    {
+      username: "david.brown",
+      firstName: "David",
+      lastName: "Brown",
+      password: "mnop",
+      auth_token: ""
+    },
+    {
+      username: "emily.jones",
+      firstName: "Emily",
+      lastName: "Jones",
+      password: "qrst",
+      auth_token: ""
     }
   ]);
 };

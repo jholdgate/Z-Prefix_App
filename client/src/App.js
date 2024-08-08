@@ -13,6 +13,7 @@ import Cookies from 'js-cookie';
 import LoginPage from './pages/LoginPage.js';
 import ManagerInventoryPage from './pages/ManagerInventoryPage.js';
 import VisitorInventoryPage from './pages/VisitorInventoryPage.js';
+import ViewMorePage from './pages/ViewMorePage.js';
 
 export const AuthContext = React.createContext();
 
@@ -39,6 +40,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/inventory" element={auth ? <ManagerInventoryPage /> : <Navigate to="/" />} />
         <Route path="/visitor" element={<VisitorInventoryPage />} />
+        <Route path="/view" element={<ViewMorePage />} />
       </Routes>
     </AuthContext.Provider>
   );

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { Button } from 'primereact/button';
+import ViewInventory from './ViewInventory';
+import BackButton from '../components/NavButtons.js'
 
 const VisitorInventoryTable = ({ newItem }) => {
   const [items, setItems] = useState([]);
@@ -26,30 +27,20 @@ const VisitorInventoryTable = ({ newItem }) => {
     }
   };
 
-  const viewMoreButton = (rowData) => {
-    return (
-      <Button
-        icon="pi pi-eye"
-        className="p-button-rounded p-button-info p-button-sm"
-        onClick={() => handleViewMore(rowData)}
-      />
-    );
-  };
-
-  const handleViewMore = (rowData) => {
-    // Implement view more functionality here
-    console.log('View more for:', rowData);
-  };
+  const viewInventoryBtn = (rowData) => {
+    return <ViewInventory item={rowData} />
+  }
 
   return (
     <div>
       <h1>Inventory Table</h1>
-      <DataTable value={items} dataKey="id">
+      <DataTable value={items} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }}>
         <Column field="item_name" header="Item Name" />
         <Column field="quantity" header="Quantity" />
         <Column field="description" header="Description" />
-        <Column header="View More" body={viewMoreButton} style={{ width: '100px' }} />
+        <Column  header="View" body={viewInventoryBtn} style={{ width: '100px' }}/>
       </DataTable>
+      <BackButton />
     </div>
   );
 };

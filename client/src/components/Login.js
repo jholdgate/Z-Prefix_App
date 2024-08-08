@@ -7,7 +7,7 @@ import { AuthContext } from '../App';
 import Cookies from 'js-cookie';
 import authenticate from '../components/Auth.js';
 
-const LoginComponent = ({ onShowRegister, alert }) => {
+const Login = ({ onShowRegister, alert }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [checked, setChecked] = useState(false);
@@ -84,4 +84,4 @@ const LoginComponent = ({ onShowRegister, alert }) => {
   );
 };
 
-export default LoginComponent;
+export default Login;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Auth
@@ -11,11 +11,7 @@ import InventoryTable from '../components/InventoryTable';
 
 const ManagerInventoryPage = () => {
   const navigate = useNavigate();
-  const [newItem, setNewItem] = useState(null);
-
-  const handleItemAdded = (item) => {
-    setNewItem(item);
-  };
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -27,11 +23,16 @@ const ManagerInventoryPage = () => {
     checkAuth()
   }, [navigate]);
 
+
+  const handleItemAdded = (item) => {
+    setItems(prevItems => [...prevItems, item]);
+  };
+
   return (
     <div>
       <h1>ManagerInventoryPage(Welcome, User...)</h1>
       <AddInventory onItemAdded={handleItemAdded} />
-      <InventoryTable newItem={newItem} />
+      <InventoryTable items={items} setItems={setItems}/>
     </div>
   )
 }

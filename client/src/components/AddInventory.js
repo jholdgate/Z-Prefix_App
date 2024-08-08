@@ -1,9 +1,12 @@
 import React, { useState, useContext } from "react";
+import { AuthContext } from '../App';
+
+// PrimeReact Imports
 import { AutoComplete } from "primereact/autocomplete";
 import { InputNumber } from 'primereact/inputnumber';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
-import { AuthContext } from '../App';
+
 
 
 
@@ -32,10 +35,7 @@ const AddInventory = ({ onItemAdded }) => {
       });
       if (res.ok) {
         const addedItem = await res.json();
-        console.log('Added item:', addedItem);
-
         onItemAdded(addedItem);
-
         setValue('');
         setQuantity(null);
         setDescription('');

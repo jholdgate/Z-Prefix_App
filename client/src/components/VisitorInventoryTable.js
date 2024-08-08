@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+
+// Components
 import ViewInventory from './ViewInventory';
 import BackButton from '../components/NavButtons.js'
+
+// PrimeReact Imports
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+
+
 
 const VisitorInventoryTable = ({ newItem }) => {
   const [items, setItems] = useState([]);

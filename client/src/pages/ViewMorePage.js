@@ -1,13 +1,14 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom';
+
+// Components
 import BackButton from '../components/NavButtons.js'
+
+
 
 const ViewMorePage = () => {
   const location = useLocation();
   const { item } = location.state || {}
-
-  console.log(item);
-
 
   return (
     <div className="card">

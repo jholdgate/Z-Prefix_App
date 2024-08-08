@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
+
+// Auth Imports
+import authenticate from '../components/Auth.js';
+
+// PrimeReact Imports
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import authenticate from '../components/Auth.js';
+
+
 
 const Register = ({ onShowLogin, alert }) => {
   const [username, setUsername] = useState('');

@@ -1,13 +1,16 @@
 import React, { useState, useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'primereact/button';
 
-// Auth
+// Auth Imports
 import Cookies from 'js-cookie';
 
-// components
+// Components
 import AddInventory from '../components/AddInventory';
 import InventoryTable from '../components/InventoryTable';
+
+// PrimeReact Imports
+import { Button } from 'primereact/button';
+
 
 
 const ManagerInventoryPage = () => {
@@ -30,7 +33,7 @@ const ManagerInventoryPage = () => {
   };
 
   const navigateToVisitors = () => {
-    navigate('/visitor'); // Navigate to the /visitors route
+    navigate('/visitor');
   }
 
   return (

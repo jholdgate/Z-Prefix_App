@@ -1,21 +1,22 @@
-import './App.css';
 import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-// PrimeReact CSS
+// PrimeReact Imports
 import "primeflex/primeflex.css";
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 // Auth
 import Cookies from 'js-cookie';
 
-// ROUTES
+// Page Imports
 import LoginPage from './pages/LoginPage.js';
 import ManagerInventoryPage from './pages/ManagerInventoryPage.js';
 import VisitorInventoryPage from './pages/VisitorInventoryPage.js';
 import ViewMorePage from './pages/ViewMorePage.js';
 
 export const AuthContext = React.createContext();
+
+
 
 function App() {
   const [auth, setAuth] = useState(false);

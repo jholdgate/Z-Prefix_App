@@ -1,11 +1,17 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+// Auth Imports
+import Cookies from 'js-cookie';
+import authenticate from '../components/Auth.js';
+import { AuthContext } from '../App';
+
+// PrimeReact Imports
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Checkbox } from "primereact/checkbox";
-import { AuthContext } from '../App';
-import Cookies from 'js-cookie';
-import authenticate from '../components/Auth.js';
+
+
 
 const Login = ({ onShowRegister, alert }) => {
   const [username, setUsername] = useState('');

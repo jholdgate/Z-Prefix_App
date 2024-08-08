@@ -29,206 +29,206 @@ app.use(
 
 // ROUTES
 
-app.post("/verify", async (req, res) => {
-  const { user, pass, type, firstName, lastName } = req.body;
-  let query = await knex('users').select('*').where("username", user);
+  // Verify Application was working
+  app.get("/", (req, res) => {
+    res.status(200).send("WORKING!");
+  });
 
-  if (type === "login") {
-    if (query.length === 1 && await bcrypt.compare(pass, query[0].password)) {
-      const token = jwt.sign({ username: user, userId: query[0].id }, SECRET_KEY, { expiresIn: '1d' });
-      await knex('users').update({auth_token: token}).where("username", user);
-      res.cookie('auth_token', token, { httpOnly: true, secure: false });
-      res.status(200).json({
-        message: "Logging you in",
-        token,
-        userId: query[0].id
-       });
-    } else {
-      res.status(404).json({ message: "Incorrect username or password"});
-    }
-  } else if (type === "create") {
-    if (query.length === 0) {
-      const hashedPassword = await bcrypt.hash(pass, 10);
-      const [newUserId] = await knex('users').insert({
-        username: user,
-        password: hashedPassword,
-        auth_token: '',
-        firstName: firstName,
-        lastName: lastName
-      }).returning('id');
-      res.status(200).json({ message: "User Created", userId: newUserId});
-    } else {
-      res.status(401).json({ message: "Username already exists"});
-    }
-  } else {
-    res.status(404).json({ message: "Invalid operation"})
-  }
-})
-
-app.get('/protected-route', (req, res) => {
-  const token = req.cookies.auth_token;
-  console.log(token)
-  if (!token) return res.status(401).json("Access denied");
-
-  try {
-      const verified = jwt.verify(token, SECRET_KEY);
-      res.status(200).json("Access granted");
-  } catch (err) {
-      res.status(400).json("Invalid token");
-  }
-});
-
-app.get("/", (req, res) => {
-  res.status(200).send("WORKING!");
-});
-
-// Get all users
-
-app.get("/users", (req, res) => {
-  knex("users")
-    .select('*')
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(301).send("Error retrieving users");
-    });
-});
-
-// Create new user
-
-app.post("/users", (req, res) => {
-  knex("users")
-    .insert(req.body)
-    .returning("*")
-    .then((data) => {
-      res.json(data[0]);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("Error creating new user");
-    });
-});
-
-// Get items by user
-
-app.get("/items/users/:usersId", (req, res) => {
-  const usersId = req.params.usersId;
-
-  knex("items")
-    .join("users", "items.users_id", "=", "users.id")
-    .where("users.id", usersId)
-    .select("items.*", "users.username as user_name")
-    .then((items) => {
-      if (items.length) {
-        res.status(200).json(items);
-      } else {
-        res.status(404).json({ message: "No items found for this user" });
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).json({ error: "An error occurred while fetching items" });
-    });
-});
-
-// Get all items
-
-app.get("/items", (req, res) => {
-  knex("items")
-    .select("*")
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(301).send("Error retrieving items");
-    });
-});
-
-// Get single items
-
-app.get("/items/:id", (req, res) => {
-  knex("items")
-    .where({ id: req.params.id })
-    .then((data) => {
-      if (data) {
-        res.status(200).json(data);
-      } else {
-        res.status(404).json({ error: "Item not found" });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("Error retrieving items");
-    });
-});
-
-// Create an item
-
-app.post("/items", (req, res) => {
-  const { item_name, quantity, description, users_id } = req.body;
-
-  // Validate input
-  if (!item_name || !quantity || !description || !users_id) {
-    return res.status(400).json({ error: "Missing required fields" });
-  }
-
-
-  knex("items")
-    .insert({ item_name, quantity, description, users_id })
-    .returning("*")
-    .then((data) => {
-      res.status(201).json(data[0]);
-    })
-    .catch((err) => {
-      console.error("Error creating item:", err);
-      res.status(500).send({
-        error: "Error creating item",
-        details: err.message
+  // Get all users
+  app.get("/users", (req, res) => {
+    knex("users")
+      .select('*')
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(301).send("Error retrieving users");
       });
-    });
-});
+  });
 
-// Update an item
+  // Create new user
+  app.post("/users", (req, res) => {
+    knex("users")
+      .insert(req.body)
+      .returning("*")
+      .then((data) => {
+        res.json(data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send("Error creating new user");
+      });
+  });
 
-app.put("/items/:id", (req, res) => {
-  knex("items")
-    .where({ id: req.params.id })
-    .update(req.body)
-    .returning("*")
-    .then((data) => {
-      if (data.length) {
-        res.status(200).json(data[0]);
+  // Get items by user
+
+  app.get("/items/users/:usersId", (req, res) => {
+    const usersId = req.params.usersId;
+
+    knex("items")
+      .join("users", "items.users_id", "=", "users.id")
+      .where("users.id", usersId)
+      .select("items.*", "users.username as user_name")
+      .then((items) => {
+        if (items.length) {
+          res.status(200).json(items);
+        } else {
+          res.status(404).json({ message: "No items found for this user" });
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json({ error: "An error occurred while fetching items" });
+      });
+  });
+
+  // Get all items
+
+  app.get("/items", (req, res) => {
+    knex("items")
+      .select("*")
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(301).send("Error retrieving items");
+      });
+  });
+
+  // Get single items
+
+  app.get("/items/:id", (req, res) => {
+    knex("items")
+      .where({ id: req.params.id })
+      .then((data) => {
+        if (data) {
+          res.status(200).json(data);
+        } else {
+          res.status(404).json({ error: "Item not found" });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send("Error retrieving items");
+      });
+  });
+
+  // Create an item
+
+  app.post("/items", (req, res) => {
+    const { item_name, quantity, description, users_id } = req.body;
+
+    // Validate input
+    if (!item_name || !quantity || !description || !users_id) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+
+    knex("items")
+      .insert({ item_name, quantity, description, users_id })
+      .returning("*")
+      .then((data) => {
+        res.status(201).json(data[0]);
+      })
+      .catch((err) => {
+        console.error("Error creating item:", err);
+        res.status(500).send({
+          error: "Error creating item",
+          details: err.message
+        });
+      });
+  });
+
+  // Update an item
+
+  app.put("/items/:id", (req, res) => {
+    knex("items")
+      .where({ id: req.params.id })
+      .update(req.body)
+      .returning("*")
+      .then((data) => {
+        if (data.length) {
+          res.status(200).json(data[0]);
+        } else {
+          res.status(404).json({ error: "Item not found" });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send("Error updating items");
+      });
+  });
+
+  // Delete an item
+
+  app.delete("/items/:id", (req, res) => {
+    knex("items")
+      .where({ id: req.params.id })
+      .del()
+      .then((count) => {
+        if (count) {
+          res.status(200).send({ message: "Item deleted successfully" });
+        } else {
+          res.status(404).json({ error: "Item not found" });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send("Error deleting items");
+      });
+  });
+
+    // Authentication
+    app.post("/verify", async (req, res) => {
+      const { user, pass, type, firstName, lastName } = req.body;
+      let query = await knex('users').select('*').where("username", user);
+
+      if (type === "login") {
+        if (query.length === 1 && await bcrypt.compare(pass, query[0].password)) {
+          const token = jwt.sign({ username: user, userId: query[0].id }, SECRET_KEY, { expiresIn: '1d' });
+          await knex('users').update({auth_token: token}).where("username", user);
+          res.cookie('auth_token', token, { httpOnly: true, secure: false });
+          res.status(200).json({
+            message: "Logging you in",
+            token,
+            userId: query[0].id
+          });
+        } else {
+          res.status(404).json({ message: "Incorrect username or password"});
+        }
+      } else if (type === "create") {
+        if (query.length === 0) {
+          const hashedPassword = await bcrypt.hash(pass, 10);
+          const [newUserId] = await knex('users').insert({
+            username: user,
+            password: hashedPassword,
+            auth_token: '',
+            firstName: firstName,
+            lastName: lastName
+          }).returning('id');
+          res.status(200).json({ message: "User Created", userId: newUserId});
+        } else {
+          res.status(401).json({ message: "Username already exists"});
+        }
       } else {
-        res.status(404).json({ error: "Item not found" });
+        res.status(404).json({ message: "Invalid operation"})
       }
     })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("Error updating items");
-    });
-});
 
-// Delete an item
+    // app.get('/protected-route', (req, res) => {
+    //   const token = req.cookies.auth_token;
+    //   console.log(token)
+    //   if (!token) return res.status(401).json("Access denied");
 
-app.delete("/items/:id", (req, res) => {
-  knex("items")
-    .where({ id: req.params.id })
-    .del()
-    .then((count) => {
-      if (count) {
-        res.status(200).send({ message: "Item deleted successfully" });
-      } else {
-        res.status(404).json({ error: "Item not found" });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send("Error deleting items");
-    });
-});
+    //   try {
+    //       const verified = jwt.verify(token, SECRET_KEY);
+    //       res.status(200).json("Access granted");
+    //   } catch (err) {
+    //       res.status(400).json("Invalid token");
+    //   }
+    // });
 
 // LISTEN
 

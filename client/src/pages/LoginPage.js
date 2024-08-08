@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Dialog } from 'primereact/dialog';
-import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+
+// Components
 import Login from '../components/Login';
 import Register from '../components/Register';
+
+// Auth Imports
+import Cookies from 'js-cookie';
+
+// PrimeReact Imports
+import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
-import { useNavigate } from 'react-router-dom';
 import { Card } from 'primereact/card';
+
+
 
 const LoginPage = () => {
   const [showRegister, setShowRegister] = useState(false);

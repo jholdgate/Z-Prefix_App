@@ -1,15 +1,17 @@
 import React from 'react';
-import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 
-const ViewInventory = ({ item, items }) => {
-  const navigate = useNavigate();
+// PrimeReact Imports
+import { Button } from 'primereact/button';
 
+
+
+const ViewInventory = ({ item }) => {
+  const navigate = useNavigate();
 
   const handleViewMore = () => {
     navigate('/view', { state: { item }});
   };
-
 
   return (
     <Button

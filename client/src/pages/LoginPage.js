@@ -3,15 +3,22 @@ import { Dialog } from 'primereact/dialog';
 import Cookies from 'js-cookie';
 import LoginComponent from '../components/LoginComponent';
 import RegisterComponent from '../components/RegisterComponent';
+import { Button } from 'primereact/button';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [showRegister, setShowRegister] = useState(false);
   const [message, setMessage] = useState('');
   const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
 
   const alert = (msg) => {
     setMessage(msg);
     setVisible(true);
+  }
+
+  const navigateToVisitors = () => {
+    navigate('/visitor'); // Navigate to the /visitors route
   }
 
   useEffect(() => {
@@ -34,6 +41,7 @@ const LoginPage = () => {
       <Dialog header="Alert" visible={visible} style={{ width: '50vw' }} onHide={() => setVisible(false)}>
         <p className="m-0">{message}</p>
       </Dialog>
+      <Button label="Go to Visitors" onClick={navigateToVisitors} className="p-button-secondary mt-3" />
     </div>
   )
 }

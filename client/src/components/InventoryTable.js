@@ -9,6 +9,7 @@ import { InputNumber } from 'primereact/inputnumber';
 const InventoryTable = ({ newItem }) => {
   const [items, setItems] = useState([]);
 
+
   useEffect(() => {
       fetchItems();
   }, []);
@@ -30,7 +31,7 @@ const InventoryTable = ({ newItem }) => {
   };
 
   const onRowEditComplete = async (e) => {
-    let { newData, index } = e;
+    let { newData } = e;
 
     try {
       const res = await fetch(`http://localhost:8080/items/${newData.id}`, {

@@ -31,13 +31,21 @@ const VisitorInventoryTable = ({ newItem }) => {
     return <ViewInventory item={rowData} />
   }
 
+   const truncateDescription = (rowData) => {
+    const description = rowData.description;
+    if (description.length > 100) {
+      return description.substring(0, 100) + '...';
+    }
+    return description;
+   }
+
   return (
     <div>
       <h1>Inventory Table</h1>
       <DataTable value={items} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }}>
         <Column field="item_name" header="Item Name" />
         <Column field="quantity" header="Quantity" />
-        <Column field="description" header="Description" />
+        <Column field="description" header="Description" body={truncateDescription} />
         <Column  header="View" body={viewInventoryBtn} style={{ width: '100px' }}/>
       </DataTable>
       <BackButton />

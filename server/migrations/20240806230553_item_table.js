@@ -8,7 +8,7 @@ exports.up = function (knex) {
     table.integer("users_id").unsigned(); //foreign key from users table
     table.foreign("users_id").references("users.id").onDelete("CASCADE");
     table.string("item_name");
-    table.string("description");
+    table.string("description", 500);
     table.integer("quantity");
   });
 };

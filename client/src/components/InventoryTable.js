@@ -100,6 +100,14 @@ const InventoryTable = ({ items, setItems }) => {
     );
   };
 
+  const truncateDescription = (rowData) => {
+    const description = rowData.description;
+    if (description.length > 100) {
+      return description.substring(0, 100) + '...';
+    }
+    return description;
+   }
+
   const renderModal = () => {
     if (!selectedItem) return null;
 
@@ -144,7 +152,7 @@ const InventoryTable = ({ items, setItems }) => {
       >
         <Column field="item_name" header="Item Name" editor={(options) => textEditor(options)} />
         <Column field="quantity" header="Quantity" editor={(options) => numberEditor(options)} />
-        <Column field="description" header="Description" editor={(options) => textEditor(options)} />
+        <Column field="description" header="Description" body={truncateDescription} editor={(options) => textEditor(options)} />
         <Column rowEditor header="Edit" headerStyle={{ width: '10%', minWidth: '8rem' }} bodyStyle={{ textAlign: 'center' }} />
         <Column  header="View" body={viewInventoryBtn} style={{ width: '100px' }}/>
         <Column header="Delete" body={deleteButton} exportable={false} style={{ minWidth: '8rem' }} />

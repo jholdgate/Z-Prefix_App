@@ -47,12 +47,13 @@ const VisitorInventoryTable = ({ newItem }) => {
 
   return (
     <div>
-      <h1>Inventory Table</h1>
+      <h2 className="mx-0 my-1">Inventory Table</h2>
       <DataTable value={items} paginator rows={5} rowsPerPageOptions={[5, 10, 25, 50]} tableStyle={{ minWidth: '50rem' }}>
-        <Column field="item_name" header="Item Name" />
-        <Column field="quantity" header="Quantity" />
-        <Column field="description" header="Description" body={truncateDescription} />
-        <Column  header="View" body={viewInventoryBtn} style={{ width: '100px' }}/>
+        <Column field="item_name" header="Item Name" sortable filter filterPlaceholder="Search by item name" />
+        <Column field="quantity" header="Quantity" sortable filter filterPlaceholder="Search by quantity" />
+        <Column field="description" header="Description" body={truncateDescription} filter filterPlaceholder="Search by description" />
+        <Column field="lastName" header="Owner's Last Name" sortable filter filterPlaceholder="Search by last name" />
+        <Column header="View" body={viewInventoryBtn} style={{ width: '100px' }}/>
       </DataTable>
       <BackButton />
     </div>

@@ -83,13 +83,18 @@ app.use(
       });
   });
 
-  // Get all items
+  // Get all items and users lastName
 
   app.get("/items", (req, res) => {
     knex("items")
-      .select("*")
-      .then((data) => {
-        res.status(200).send(data);
+      .join("users", "items.users_id", "=", "users.id")
+      .select("items.*", "users.lastName")
+      .then((items) => {
+        if (items.length) {
+          res.status(200).send(items);
+        } else {
+          res.status(404).json({ message: "No items found" });
+        }
       })
       .catch((err) => {
         console.log(err);

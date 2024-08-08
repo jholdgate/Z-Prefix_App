@@ -1,17 +1,24 @@
 const loginServer = 'http://localhost:8080/verify';
 
-async function authenticate(username, password, requestType) {
+async function authenticate(username, password, requestType, firstName = '', lastName = '') {
+  const body = {
+    user: username,
+    pass: password,
+    type: requestType,
+  };
+
+  if (requestType === 'create') {
+    body.firstName = firstName;
+    body.lastName = lastName;
+  }
+
   const response = await fetch(loginServer, {
     method: 'POST',
     headers: {
       'Accept': 'application/json, text/plain, */*',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      user: username,
-      pass: password,
-      type: requestType,
-    }),
+    body: JSON.stringify(body),
   })
     .then(res => res.json())
     .then(res => {

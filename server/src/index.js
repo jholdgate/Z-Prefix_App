@@ -30,7 +30,7 @@ app.use(
 // ROUTES
 
 app.post("/verify", async (req, res) => {
-  const { user, pass, type } = req.body;
+  const { user, pass, type, firstName, lastName } = req.body;
   let query = await knex('users').select('*').where("username", user);
 
   if (type === "login") {
@@ -49,7 +49,13 @@ app.post("/verify", async (req, res) => {
   } else if (type === "create") {
     if (query.length === 0) {
       const hashedPassword = await bcrypt.hash(pass, 10);
-      const [newUserId] = await knex('users').insert({ username: user, password: hashedPassword, auth_token: ''}).returning('id');
+      const [newUserId] = await knex('users').insert({
+        username: user,
+        password: hashedPassword,
+        auth_token: '',
+        firstName: firstName,
+        lastName: lastName
+      }).returning('id');
       res.status(200).json({ message: "User Created", userId: newUserId});
     } else {
       res.status(401).json({ message: "Username already exists"});

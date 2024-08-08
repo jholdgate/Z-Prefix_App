@@ -43,9 +43,9 @@ const InventoryTable = ({ newItem }) => {
       });
 
       if (res.ok) {
-        let newItems = [...items];
-        newItems[index] = newData;
-        setItems(newItems);
+        setItems(prevItems =>
+          prevItems.map(item => item.id === newData.id ? newData : item)
+        );
       } else {
         const errorData = await res.json();
         console.error('Error updating item:', errorData.error);
